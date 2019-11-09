@@ -20,6 +20,8 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 ArrayList personagens = new ArrayList() ;
+ArrayList altura = new ArrayList() ;
+ArrayList nascimento = new ArrayList() ;
 RecyclerView lista;
 RecyclerView.Adapter adp;
 
@@ -47,19 +49,20 @@ RecyclerView.Adapter adp;
             public void run()
             {
                 setContentView(R.layout.activity_main);
-               lista = (RecyclerView) findViewById(R.id.lista);
-               lista.setAdapter(arrayAdapter(personagens));
-               lista.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                lista = (RecyclerView) findViewById(R.id.lista);
+                lista.setAdapter(arrayAdapter(personagens,altura,nascimento));
+                lista.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
             }
         }, 5000);
 
     }
-        public RecyclerView.Adapter arrayAdapter(ArrayList arraylist)
+        public RecyclerView.Adapter arrayAdapter(ArrayList Personagens,ArrayList Altura,ArrayList Nascimento)
         {
+            Adapter_Recycler adp = new Adapter_Recycler(Personagens,Altura,Nascimento);
+         //   System.out.println(personagens.get(1).toString()+personagens.get(2).toString()+personagens.get(3).toString());
 
-            Adapter_Recycler adapter = new Adapter_Recycler(arraylist);
-             System.out.println(arraylist.get(1).toString()+arraylist.get(2).toString()+ arraylist.get(3).toString());
-          return adapter;
+          return adp;
         }
 
         public void listar(int num){
@@ -72,8 +75,9 @@ RecyclerView.Adapter adp;
 
                     Personagem personagem = response.body();
 
-                    personagens.add("Nome :" +personagem.getname()+"\n"+"Altura :"+personagem.getheight()+"\n"+"Ano de Nascimento :"+personagem.getbirth_year());
-
+                    personagens.add("Nome :" +personagem.getname());
+                    altura.add("Altura :"+personagem.getheight());
+                    nascimento.add("Ano de Nascimento :"+personagem.getbirth_year());
                 }
 
                 @Override
